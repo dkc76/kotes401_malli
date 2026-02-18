@@ -1,6 +1,6 @@
 # KOTES401 — LLM‑avusteinen harjoitus (starter)
 
-Tämä repository sisältää starter‑materiaalin 2 tunnin ohjelmointituokiota varten: opiskelijat rakentavat pienen interaktiivisen HTML+JavaScript‑komponentin käyttäen kielimallia (LLM) apuna. Lopputyö on julkaistavissa github.io‑sivuna automaattisen GitHub Actions ‑workflow'n avulla (ohjeet `PUBLISH.md`).
+Tämä repository sisältää starter‑materiaalin 2 tunnin ohjelmointituokiota varten: opiskelijat rakentavat pienen interaktiivisen HTML+JavaScript‑komponentin käyttäen kielimallia (LLM) apuna. Lopputulos on julkaisukelpoinen GitHub Pages‑sivuna automaattisen GitHub Actions ‑workflow'n avulla (ohjeet `PUBLISH.md`).
 
 Mitä repossa on:
 
@@ -21,4 +21,4 @@ Pika‑aloitus:
 
 Opettajalle: katso `exercises/README.md` ja `PROMPTS.md` — sisältö on räätälöity 2 h istuntoon.
 
-<!-- CI: trigger LaTeX build -->
+<!-- CI: second trigger -->
