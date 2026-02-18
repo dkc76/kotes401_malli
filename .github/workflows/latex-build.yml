@@ -33,7 +33,19 @@ jobs:
           name: workshop-pdf
           path: workshop.pdf
 
-      - name: Commit compiled PDF back to repo
+      - name: Commit compiled PDF using PERSONAL_ACCESS_TOKEN (if provided)
+        if: ${{ secrets.PERSONAL_ACCESS_TOKEN != '' }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          message: "Build: add compiled workshop.pdf"
+          add: "workshop.pdf"
+          author_name: github-actions
+          author_email: github-actions@github.com
+
+      - name: Commit compiled PDF using GITHUB_TOKEN (best-effort)
+        if: ${{ secrets.PERSONAL_ACCESS_TOKEN == '' }}
+        continue-on-error: true
         uses: EndBug/add-and-commit@v9
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -41,6 +53,14 @@ jobs:
           add: "workshop.pdf"
           author_name: github-actions
           author_email: github-actions@github.com
+
+      - name: Notify if PDF not pushed automatically
+        if: ${{ secrets.PERSONAL_ACCESS_TOKEN == '' }}
+        run: |
+          echo "Compiled PDF is available as an artifact (see Actions run)."
+          echo "To auto-commit the PDF either:"
+          echo "  • enable 'Read and write' workflow permissions in repository Settings → Actions → General, or"
+          echo "  • add a secret named PERSONAL_ACCESS_TOKEN (personal access token with 'repo' scope)."
 
   build_fallback:
     runs-on: ubuntu-latest
@@ -69,7 +89,19 @@ jobs:
           name: workshop-pdf-fallback
           path: workshop.pdf
 
-      - name: Commit compiled PDF back to repo (fallback)
+      - name: Commit compiled PDF using PERSONAL_ACCESS_TOKEN (fallback)
+        if: ${{ secrets.PERSONAL_ACCESS_TOKEN != '' }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          message: "Build(fallback): add compiled workshop.pdf"
+          add: "workshop.pdf"
+          author_name: github-actions
+          author_email: github-actions@github.com
+
+      - name: Commit compiled PDF using GITHUB_TOKEN (fallback, best-effort)
+        if: ${{ secrets.PERSONAL_ACCESS_TOKEN == '' }}
+        continue-on-error: true
         uses: EndBug/add-and-commit@v9
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -77,3 +109,11 @@ jobs:
           add: "workshop.pdf"
           author_name: github-actions
           author_email: github-actions@github.com
+
+      - name: Notify if PDF not pushed automatically (fallback)
+        if: ${{ secrets.PERSONAL_ACCESS_TOKEN == '' }}
+        run: |
+          echo "Compiled PDF (fallback) is available as an artifact (see Actions run)."
+          echo "To auto-commit the PDF either:"
+          echo "  • enable 'Read and write' workflow permissions in repository Settings → Actions → General, or"
+          echo "  • add a secret named PERSONAL_ACCESS_TOKEN (personal access token with 'repo' scope)."
