@@ -21,5 +21,4 @@ Pika‑aloitus:
 
 Opettajalle: katso `exercises/README.md` ja `PROMPTS.md` — sisältö on räätälöity 2 h istuntoon.
 
-
-
+<!-- CI: trigger LaTeX build -->
