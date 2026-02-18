@@ -3,9 +3,14 @@ name: Build LaTeX and commit PDF
 on:
   push:
     branches: [ main ]
-    # Älä laukaisuta uudelleen PDF‑commiteilla
+    # Älä laukaise uudelleen PDF‑commiteilla
     paths-ignore: ['**.pdf']
-  workflow_dispatch: {}
+
+workflow_dispatch: {}
+
+# Explicit permission required so the action can push the generated PDF back
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -13,6 +18,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Compile LaTeX (workshop.tex)
         uses: xu-cheng/latex-action@v2
@@ -29,6 +36,7 @@ jobs:
       - name: Commit compiled PDF back to repo
         uses: EndBug/add-and-commit@v9
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           message: "Build: add compiled workshop.pdf"
           add: "workshop.pdf"
           author_name: github-actions
@@ -41,6 +49,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Install TeX Live (fallback)
         run: |
@@ -62,6 +72,7 @@ jobs:
       - name: Commit compiled PDF back to repo (fallback)
         uses: EndBug/add-and-commit@v9
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           message: "Build(fallback): add compiled workshop.pdf"
           add: "workshop.pdf"
           author_name: github-actions
