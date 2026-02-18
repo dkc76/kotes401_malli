@@ -1,0 +1,12 @@
+{
+  "name": "KOTES401 Starter",
+  "image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:0-20",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ],
+  "postCreateCommand": "echo 'Devcontainer ready'"
+}

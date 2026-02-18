@@ -1,0 +1,51 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[finnish]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\title{KOTES401 — LLM‑avusteinen ohjelmoinnin harjoitus (workshop)}
+\author{Opettaja}
+\date{\today}
+\begin{document}
+\maketitle
+\section*{Tavoite}
+Opiskelija rakentaa pienen interaktiivisen komponentin (TODO‑lista) käyttäen kielimallia (LLM) apuna. Lopputulos on julkaisukelpoinen GitHub Pages\-sivuna.
+
+\section*{Aikataulu (120 min)}
+\begin{enumerate}[leftmargin=*]
+  \item 0--10 min: Aloitus ja demo
+  \item 10--20 min: Ympäristön avaus (Codespaces/GitHub.dev/paikallinen)
+  \item 20--35 min: Prompt‑demo (koodin generointi, virheiden selvitys)
+  \item 35--70 min: Päätehtävä (HTML/React‑komponentti)
+  \item 70--90 min: Debuggaus ja refaktorointi LLM:llä
+  \item 90--105 min: Lisäominaisuudet ja saavutettavuus
+  \item 105--120 min: Demo‑kierros ja julkaisuohjeet
+\end{enumerate}
+
+\section*{Materiaalit}
+\begin{itemize}
+  \item Starter: \texttt{starter/} (HTML) ja \texttt{starter-react/} (React)
+  \item Ratkaisu: \texttt{solution/} (opettajalle)
+  \item Prompt‑mallit: \texttt{PROMPTS.md}
+  \item Julkaisuohjeet: \texttt{PUBLISH.md}
+\end{itemize}
+
+\section*{Harjoitustehtävät}
+\begin{enumerate}[leftmargin=*]
+  \item Toteuta tehtävän lisäys, poisto ja valmiiksi merkintä.
+  \item Tallenna lista \texttt{localStorage}iin.
+  \item Näytä vähintään yksi LLM‑interaktio (prompt + vastaus).
+  \item (Jälkityö) Julkaise github.io:hon.
+\end{enumerate}
+
+\section*{Esimerkkipromptit}
+\begin{itemize}
+  \item Kirjoita JavaScript‑funktio \texttt{addTodo(text)} joka lisää uuden \texttt{li}‑elementin listaan \texttt{\#todo-list}. \n
+  \item Korjaa virheilmoitus: \texttt{TypeError: Cannot read property "dataset" of null}. Liitä koodipätkä ja pyydä selitys + korjaus.
+\end{itemize}
+
+\section*{Julkaisu}
+Opiskelijat kopioivat tuotoksensa \texttt{public/}‑kansioon ja tekevät commitin. Repo on konfiguroitu automaattiseen GitHub Pages ‑deployiin.
+
+\end{document}

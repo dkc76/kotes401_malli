@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>KOTES401 — Starter: TODO</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>TODO‑lista (starter)</h1>
+      <p>Täydennä JavaScript‑osuus istunnon aikana. Käytä kielimallia apuna (PROMPTS.md).</p>
+
+      <div class="todo-app">
+        <label for="todo-input">Uusi tehtävä</label>
+        <div class="input-row">
+          <input id="todo-input" placeholder="Kirjoita tehtävä..." />
+          <button id="add-btn">Lisää</button>
+        </div>
+        <ul id="todo-list" aria-live="polite"></ul>
+      </div>
+
+      <section class="hints">
+        <h2>Tehtävät</h2>
+        <ol>
+          <li>Tee funktio <code>addTodo(text)</code> joka lisää uuden kohteen listaan.</li>
+          <li>Lisää poista‑painike ja merkintä valmiiksi tehdylle tehtävälle.</li>
+          <li>Bonus: tallenna lista <code>localStorage</code>iin.</li>
+        </ol>
+      </section>
+
+      <p class="hint">Vinkki: pyydä LLM:ää kirjoittamaan `addTodo`-funktio ja selittämään, miksi se toimii.</p>
+    </main>
+
+    <script src="scripts/app.js"></script>
+  </body>
+</html>
