@@ -18,6 +18,7 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: workshop.tex
+          compiler: xelatex
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
