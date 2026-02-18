@@ -2,19 +2,18 @@ name: Build LaTeX and commit PDF
 
 on:
   push:
-    branches: [ main ]
-    # Älä laukaise uudelleen PDF‑commiteilla
-    paths-ignore: ['**.pdf']
+    branches:
+      - '**'
+  workflow_dispatch: {}
 
-workflow_dispatch: {}
-
-# Explicit permission required so the action can push the generated PDF back
 permissions:
   contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,28 +33,28 @@ jobs:
           path: workshop.pdf
 
       - name: Commit compiled PDF using PERSONAL_ACCESS_TOKEN (if provided)
-        if: ${{ secrets.PERSONAL_ACCESS_TOKEN != '' }}
+        if: env.PERSONAL_ACCESS_TOKEN != ''
         uses: EndBug/add-and-commit@v9
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          message: "Build: add compiled workshop.pdf"
+          github_token: ${{ env.PERSONAL_ACCESS_TOKEN }}
+          message: "Build: add compiled workshop.pdf [skip ci]"
           add: "workshop.pdf"
           author_name: github-actions
           author_email: github-actions@github.com
 
       - name: Commit compiled PDF using GITHUB_TOKEN (best-effort)
-        if: ${{ secrets.PERSONAL_ACCESS_TOKEN == '' }}
+        if: env.PERSONAL_ACCESS_TOKEN == ''
         continue-on-error: true
         uses: EndBug/add-and-commit@v9
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          message: "Build: add compiled workshop.pdf"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "Build: add compiled workshop.pdf [skip ci]"
           add: "workshop.pdf"
           author_name: github-actions
           author_email: github-actions@github.com
 
       - name: Notify if PDF not pushed automatically
-        if: ${{ secrets.PERSONAL_ACCESS_TOKEN == '' }}
+        if: env.PERSONAL_ACCESS_TOKEN == ''
         run: |
           echo "Compiled PDF is available as an artifact (see Actions run)."
           echo "To auto-commit the PDF either:"
@@ -66,6 +65,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: always()
+    env:
+      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -90,28 +91,28 @@ jobs:
           path: workshop.pdf
 
       - name: Commit compiled PDF using PERSONAL_ACCESS_TOKEN (fallback)
-        if: ${{ secrets.PERSONAL_ACCESS_TOKEN != '' }}
+        if: env.PERSONAL_ACCESS_TOKEN != ''
         uses: EndBug/add-and-commit@v9
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          message: "Build(fallback): add compiled workshop.pdf"
+          github_token: ${{ env.PERSONAL_ACCESS_TOKEN }}
+          message: "Build(fallback): add compiled workshop.pdf [skip ci]"
           add: "workshop.pdf"
           author_name: github-actions
           author_email: github-actions@github.com
 
       - name: Commit compiled PDF using GITHUB_TOKEN (fallback, best-effort)
-        if: ${{ secrets.PERSONAL_ACCESS_TOKEN == '' }}
+        if: env.PERSONAL_ACCESS_TOKEN == ''
         continue-on-error: true
         uses: EndBug/add-and-commit@v9
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          message: "Build(fallback): add compiled workshop.pdf"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "Build(fallback): add compiled workshop.pdf [skip ci]"
           add: "workshop.pdf"
           author_name: github-actions
           author_email: github-actions@github.com
 
       - name: Notify if PDF not pushed automatically (fallback)
-        if: ${{ secrets.PERSONAL_ACCESS_TOKEN == '' }}
+        if: env.PERSONAL_ACCESS_TOKEN == ''
         run: |
           echo "Compiled PDF (fallback) is available as an artifact (see Actions run)."
           echo "To auto-commit the PDF either:"
