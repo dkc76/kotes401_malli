@@ -1,0 +1,34 @@
+name: Build LaTeX and commit PDF
+
+on:
+  push:
+    branches: [ main ]
+    # Älä laukaisuta uudelleen PDF‑commiteilla
+    paths-ignore: ['**.pdf']
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX (workshop.tex)
+        uses: dante-ev/latex-action@v2
+        with:
+          root_file: workshop.tex
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: workshop-pdf
+          path: workshop.pdf
+
+      - name: Commit compiled PDF back to repo
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Build: add compiled workshop.pdf"
+          add: "workshop.pdf"
+          author_name: github-actions
+          author_email: github-actions@github.com
