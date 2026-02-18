@@ -33,3 +33,36 @@ jobs:
           add: "workshop.pdf"
           author_name: github-actions
           author_email: github-actions@github.com
+
+  build_fallback:
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install TeX Live (fallback)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y texlive-xetex texlive-latex-extra texlive-fonts-recommended texlive-lang-english
+
+      - name: Compile with xelatex (fallback)
+        run: |
+          set -e
+          xelatex -interaction=nonstopmode -halt-on-error workshop.tex || true
+          ls -la workshop.pdf || true
+
+      - name: Upload PDF artifact (fallback)
+        uses: actions/upload-artifact@v4
+        with:
+          name: workshop-pdf-fallback
+          path: workshop.pdf
+
+      - name: Commit compiled PDF back to repo (fallback)
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Build(fallback): add compiled workshop.pdf"
+          add: "workshop.pdf"
+          author_name: github-actions
+          author_email: github-actions@github.com
