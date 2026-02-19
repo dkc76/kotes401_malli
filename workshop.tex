@@ -77,13 +77,56 @@ useEffect(() => {
 Vinkki LLM‑avulle: pyyd&auml; LLM:lt&auml; event handlerien malli, yksikk&ouml;testit tai saavutettavuusehdotukset.
 
 \section*{Esimerkkipromptit}
-T&auml;ss&auml; muutamia valmiita prompt‑malleja opiskelijoille ja opettajalle:
+T&auml;ss&auml; muutamia valmiita prompt‑malleja opiskelijoille ja opettajalle — ja kaksi valmista esimerkkikooda + tulkinta -mallia, joita voi pyyt&auml;&auml; suoraan LLM:lt&auml;.
 \begin{enumerate}[leftmargin=*]
   \item Kirjoita JavaScript‑funktio \texttt{addTodo(text)} joka lis&auml;&auml; uuden \texttt{li}‑elementin listaan \texttt{\#todo-list}. Lis&auml;&auml; my&ouml;s "Poista"‑painike joka poistaa kyseisen elementin. Palauta vain JavaScript‑koodi, ei selityksi&auml;.
   \item Korjaa virhe: "TypeError: Cannot read property \"dataset\" of null" — liit&auml; koodip&auml;tke&auml; ja pyyd&auml; lyhyt selitys ja korjaus.
-  \item Refaktoroi funktio lyhyemmäksi ja lisaa yksikk&ouml;testi (Jest): liit&auml; koodip&auml;tke&auml;.
+  \item Refaktoroi funktio lyhyemmäksi ja kirjoita yksikk&ouml;testit (Jest): liit&auml; koodip&auml;tke&auml;.
   \item Kirjoita kuvaava git‑commit‑viesti muutokselle: lisätty Poista‑painike ja localStorage‑tuki.
+  \item Paranna saavutettavuutta: "Lis&auml;&auml; ARIA‑attribuutit ja n&auml;pp&auml;imist&ouml;tuet t&auml;lle HTML‑pohjalle" (liit&auml; HTML‑p&auml;tke&auml;).
+  \item Ymm&auml;rr&auml; koodi rivikohtaisesti: "Selit&auml; seuraava funktio rivi rivilt&auml; — kerro mahdolliset bugit ja parannusehdotukset" (liit&auml; koodip&auml;tke&auml;).
+  \item Kirjoita testi ja CI‑workflow: "Lis&auml;&auml; Jest‑testit funktiolle X ja lis&auml;&auml; yksinkertainen GitHub Actions ‑workflow joka ajaa testit." 
 \end{enumerate}
+
+\subsection*{Esimerkkikoodit ja tulkinnat}
+\paragraph{Esimerkki A — DOM‑poisto (bugi ja korjaus)}
+\begin{verbatim}
+function removeTodo(e) {
+  const id = e.target.dataset.id;
+  const item = document.querySelector(`#todo-${id}`);
+  item.parentNode.removeChild(item);
+}
+\end{verbatim}
+\textbf{Tulkinta:} Jos klikatun kohteen (e.target) rakenne vaihtelee (esim. sisällä on span tai svg), \texttt{e.target.dataset} voi olla undefined. My&ouml;s elementti voi olla jo poistettu — kutsu voi aiheuttaa virheen.
+\textbf{Korjaus (esimerkki):}
+\begin{verbatim}
+function removeTodo(e) {
+  const btn = e.target.closest('button');
+  const id = btn?.dataset?.id;
+  const item = document.querySelector(`#todo-${id}`);
+  if (item) item.remove();
+}
+\end{verbatim}
+\textbf{LLM‑prompt (esimerkki):} "Korjaa `removeTodo`-funktio siten, ett&auml; se toimii kun click‑target voi olla span tai svg napin sis&auml;ll&auml;. Palauta vain korjattu funktio."
+
+\paragraph{Esimerkki B — React: tilan mutointi}
+\begin{verbatim}
+function toggleTodo(id) {
+  const todo = todos.find(t => t.id === id);
+  todo.done = !todo.done;
+  setTodos(todos);
+}
+\end{verbatim}
+\textbf{Tulkinta:} Koodi muuttaa `todos`-taulukon suoraan (mutaatio). React ei välttämättä havaitse muutosta, koska viite pysyy samana.
+\textbf{Korjaus (esimerkki):}
+\begin{verbatim}
+function toggleTodo(id) {
+  setTodos(todos.map(t => t.id === id ? { ...t, done: !t.done } : t));
+}
+\end{verbatim}
+\textbf{LLM‑prompt (esimerkki):} "Korjaa `toggleTodo`-funktio: äl&auml; muuta tilaobjektia suoraan, palauta immuuttinen versio joka korjaa renderöinti‑ongelman."
+
+\noindent Muokkausvihje: pyyd&auml; LLM:lt&auml; aina "show only the fixed code" tai "explain line-by-line" kun haluat koodin tulkinnan.
 
 \section*{Julkaisu}
 Julkaise kopioimalla tuotokset \texttt{public/}-kansioon ja tee commit.
