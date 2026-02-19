@@ -33,20 +33,89 @@ Opiskelija rakentaa pienen interaktiivisen komponentin (TODO‑lista) käyttäen
 \end{itemize}
 
 \section*{Harjoitustehtävät}
+Tavoite: rakentaa toimiva TODO‑komponentti (HTML tai React) ja osoittaa LLM:n hyödynnettävyys kehitysvaiheessa.
+
+\subsection*{Perustehtävä}
 \begin{enumerate}[leftmargin=*]
-  \item Toteuta tehtävän lisäys, poisto ja valmiiksi merkintä.
-  \item Tallenna lista \texttt{localStorage}iin.
-  \item Näytä vähintään yksi LLM‑interaktio (prompt + vastaus).
-  \item (Jälkityö) Julkaise github.io:hon.
+  \item Toteuta lis&auml;&auml;, poisto ja valmiiksi merkint&auml;.
+  \item Tallenna lista \texttt{localStorage}iin siten, ett&auml; uudelleenlataus palauttaa tilan.
+  \item Esittele v&auml;hint&auml;&auml;n yksi LLM‑interaktio (liitetty prompt + vastaus). 
+  \item (J&auml;lkit&ouml;) Julkaise lopputulos kopioimalla tuotokset \texttt{public/}-kansioon.
 \end{enumerate}
 
-\section*{Esimerkkipromptit}
+\subsection*{Hyv&auml;ksymiskriteerit}
 \begin{itemize}
-  \item Kirjoita JavaScript‑funktio \texttt{addTodo(text)} joka lisää uuden \texttt{li}‑elementin listaan \texttt{\#todo-list}.
-  \item Korjaa virheilmoitus: \texttt{TypeError: Cannot read property "dataset" of null}. Liitä koodipätkä ja pyydä selitys + korjaus.
+  \item Lis&auml;ys, poisto ja valmiiksi merkitseminen toimivat manuaalisesti.
+  \item LocalStorage toimii (tiedot pysyvät sivun uudelleenlatauksen yli).
+  \item V&auml;hint&auml;&auml;n yksi commit ja opiskelija selostaa LLM:n roolin muutoksessa.
 \end{itemize}
 
+\subsection*{Bonus‑teht&auml;v&auml;t}
+\begin{itemize}
+  \item Lisää yksikk&ouml;testi (esim. Jest / React Testing Library).
+  \item Saavutettavuusparannuksia (ARIA, n&auml;pp&auml;imist&ouml;ohjaus).
+  \item Lis&auml;&auml; muokkaus‑ tai suodatusominaisuus.
+\end{itemize}
+
+\subsection*{React‑osio (laajennettu)}
+K&auml;yt&auml; \texttt{starter-react/}. Suositeltu komponenttirakenne: \texttt{TodoApp} (state), \texttt{TodoList}, \texttt{TodoItem}. Tilamuotoesimerkki:
+
+\begin{verbatim}
+[
+  { id: 1, text: "Osta maitoa", done: false },
+  { id: 2, text: "Soita äidille", done: true }
+]
+\end{verbatim}
+
+Keskeiset funktiot: \texttt{addTodo(text)}, \texttt{removeTodo(id)}, \texttt{toggleTodo(id)}. Tallenna tila localStorageen esim.:
+\begin{verbatim}
+useEffect(() => {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}, [todos]);
+\end{verbatim}
+
+Vinkki LLM‑avulle: pyyd&auml; LLM:lt&auml; event handlerien malli, yksikk&ouml;testit tai saavutettavuusehdotukset.
+
+\section*{Esimerkkipromptit}
+T&auml;ss&auml; muutamia valmiita prompt‑malleja opiskelijoille ja opettajalle:
+\begin{enumerate}[leftmargin=*]
+  \item Kirjoita JavaScript‑funktio \texttt{addTodo(text)} joka lis&auml;&auml; uuden \texttt{li}‑elementin listaan \texttt{\#todo-list}. Lis&auml;&auml; my&ouml;s "Poista"‑painike joka poistaa kyseisen elementin. Palauta vain JavaScript‑koodi, ei selityksi&auml;.
+  \item Korjaa virhe: "TypeError: Cannot read property \"dataset\" of null" — liit&auml; koodip&auml;tke&auml; ja pyyd&auml; lyhyt selitys ja korjaus.
+  \item Refaktoroi funktio lyhyemmäksi ja lisaa yksikk&ouml;testi (Jest): liit&auml; koodip&auml;tke&auml;.
+  \item Kirjoita kuvaava git‑commit‑viesti muutokselle: lisätty Poista‑painike ja localStorage‑tuki.
+\end{enumerate}
+
 \section*{Julkaisu}
-Opiskelijat kopioivat tuotoksensa \texttt{public/}‑kansioon ja tekevät commitin. Repo on konfiguroitu automaattiseen GitHub Pages ‑deployiin.
+Julkaise kopioimalla tuotokset \texttt{public/}-kansioon ja tee commit.
+\begin{enumerate}[leftmargin=*]
+  \item Varmista, ett&auml; repo on \textbf{public} tai ett&auml; organisaatio sallii Pages‑julkaisun.
+  \item Kopioi tiedostot (\texttt{index.html}, \texttt{styles.css}, \texttt{scripts/*.js}) \rightarrow \texttt{public/}.
+  \item Commit & push:
+    \begin{verbatim}
+    git add public/*
+    git commit -m "Publish: oma TODO app"
+    git push origin main
+    \end{verbatim}
+  \item Odota Actions → "Deploy to GitHub Pages" ja tarkista Pages‑URL.
+\end{enumerate}
+
+\subsection*{PDF (workshop.tex -> workshop.pdf)}
+Repossa on workflow PDF:n k&auml;ytt&ouml;&ouml;nottoon: \texttt{.github/workflows/latex-build.yml}. Triggerit: \texttt{push} ja \texttt{workflow_dispatch}. Artifactit: \texttt{workshop-pdf} ja \texttt{workshop-pdf-fallback}. Jos haluat, ett&auml; PDF commitoidaan automaattisesti repoon, anna write‑oikeudet Actionsille tai lisää secretti \texttt{PERSONAL_ACCESS_TOKEN} (scope: repo).
+
+\section*{Opettajalle — vinkit ja aikataulu}
+\begin{itemize}
+  \item Demo &amp; prompt‑näyttö: 0–10 min (näytä LLM korjaamassa virhe).
+  \item Ohjeistus &amp; työskentely: 10–70 min (perustehtävä + React‑ominaisuudet).
+  \item Debuggaus &amp; refaktorointi LLM:llä: 70–105 min.
+  \item Julkaisu &amp; demo: 105–120 min.
+\end{itemize}
+
+\section*{Liite: Vianm&auml;&auml;ritys ja CI}
+\begin{itemize}
+  \item "No jobs were run": tee uusi commit tai kaynnista workflow manuaalisesti (workflow_dispatch).
+  \item Pages ei p&auml;ivity: varmista, ett&auml; muutokset menivt \texttt{public/}-kansioon ja Actions ajoi onnistuneesti.
+  \item PDF ei ilmesty repoon: tarkista Actions‑artifactit; ota workflowlle write‑oikeudet tai lisaa \texttt{PERSONAL_ACCESS_TOKEN} -secretti.
+  \item Workflow‑sijainti: \texttt{.github/workflows/latex-build.yml}.
+\end{itemize}
 
 \end{document}
